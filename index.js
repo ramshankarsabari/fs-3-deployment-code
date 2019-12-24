@@ -4,6 +4,7 @@ var morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
@@ -49,17 +50,18 @@ function getMaxId(){
     const maxId = phonebook.length > 0
     ? Math.max(...phonebook.map(n => n.id)) 
     : 0
-    return maxId;
+    return maxId+1;
 }
 
 app.post('/api/persons/post', (request, response) => {
-    const person = request.body
-    console.log(person)
-    var newPhBook = {
+   const person = request.body
+    console.log(request)
+   var newPhBook = {
         id: getMaxId(),
         name: person.name,
         number: person.number
-    }
+   }
+    console.log(newPhBook);
     phonebook = phonebook.concat(newPhBook);
     response.json(newPhBook)
   })
